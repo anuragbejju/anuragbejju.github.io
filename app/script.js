@@ -5,6 +5,10 @@ On init
 */
 
 // wait until DOM is ready
+var myjson;
+$.getJSON("https://anuragbejju.github.io/app/svg_file.json", function(json){
+myjson = json;
+});
 document.addEventListener("DOMContentLoaded", function(event) {
 
  // wait until window, stylesheets, images, links, and other media assets are loaded
@@ -143,10 +147,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       hits = 0,
       score = 0,
       accuracy = 0;
-      $.getJSON( "svg_file.json", function( data ) {
 
-          console.log(data); //json output
-      });
 
 
   window.addEventListener("resize", resize);
