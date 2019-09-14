@@ -120,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       var xml = doc.parseFromString(response, "image/svg+xml");
     });
     request.send();
+    var svg_file = request.response;
 
     d3.select("svg#ball").html(request.response);
 
