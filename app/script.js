@@ -143,8 +143,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
       hits = 0,
       score = 0,
       accuracy = 0;
+      $.getJSON( "svg_file.json", function( data ) {
 
-
+          console.log(data); //json output
+      });
 
 
   window.addEventListener("resize", resize);
