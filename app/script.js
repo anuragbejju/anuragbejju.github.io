@@ -18,6 +18,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
   **************************** */
 
 
+         var request = new XMLHttpRequest();
+           request.open("GET", "items/pizza.svg");
+           request.setRequestHeader("Content-Type", "image/svg+xml");
+           request.addEventListener("load", function(event) {
+             var response = event.target.responseText;
+             var doc = new DOMParser();
+             var xml = doc.parseFromString(response, "image/svg+xml");
+           });
+           request.send();
+           var svg_file = request.response;
+
+           d3.select("svg#ball").html(request.response);
+
+
+
 
 
   // A Vector
@@ -26,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
    _y: 0,
 
    create: function(x, y) {
+
    var obj = Object.create(this);
    obj.setX(x);
    obj.setY(y);
@@ -90,20 +106,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
    gravity: null,
 
    create: function(x, y, speed, direction, grav) {
-
-
-       var request = new XMLHttpRequest();
-         request.open("GET", "items/pizza.svg");
-         request.setRequestHeader("Content-Type", "image/svg+xml");
-         request.addEventListener("load", function(event) {
-           var response = event.target.responseText;
-           var doc = new DOMParser();
-           var xml = doc.parseFromString(response, "image/svg+xml");
-         });
-         request.send();
-         var svg_file = request.response;
-
-         d3.select("svg#ball").html(request.response);
 
 
 
