@@ -111,6 +111,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
   };
 
 
+  var request = new XMLHttpRequest();
+    request.open("GET", "items/pizza.svg");
+    request.setRequestHeader("Content-Type", "image/svg+xml");
+    request.addEventListener("load", function(event) {
+      var response = event.target.responseText;
+      var doc = new DOMParser();
+      var xml = doc.parseFromString(response, "image/svg+xml");
+    });
+    request.send();
+
+    d3.select("svg#ball").html(request.response);
 
   // Ball and basket vars
   var ball = document.getElementById("ball"),
@@ -122,11 +133,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
       scale,
       w,
       h;
-
-      var svg_img = '<svg width="400" height="110"><rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" /></svg>';
-      var svgElement = document.getElementById("ball");
-
-
 
   // Motion vars
   var p,
