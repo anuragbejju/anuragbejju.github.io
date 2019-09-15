@@ -109,3 +109,47 @@ li {
 .ui-widget {
 background: #F9F9F9;
 }
+
+
+.instructions {
+  bottom: 0;
+  font-size: 1rem;
+}
+
+
+.notify{  
+  position:absolute;
+  top:0px;
+  width:40%;
+  height: 0;
+  box-sizing:border-box;
+  color:white;
+  text-align:center;
+  overflow:hidden;
+  box-sizing:border-box;
+  transition:height .2s;
+  z-index:100;
+  left:35%;
+  top:50%;
+}
+
+#notifyType:before{
+  display:block;
+  margin-top:15px; 
+}
+
+.active{  
+  height:50px;
+}
+
+.success:before{
+  Content:"Aww Yeaaaaa! You're so great!";
+  color:#f0f0f0; 
+  font-weight: bold;
+}
+
+.failure:before{
+  Content:"Oh no! Please try a again :(";
+  color:#f0f0f0;  
+  font-weight: bold;
+}

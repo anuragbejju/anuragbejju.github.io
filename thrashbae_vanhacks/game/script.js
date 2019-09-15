@@ -250,9 +250,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
               inside_bin = 1;
               if (myjson[shots-1]["result"] == 0){
                 score -= 1;
+                sendFailure()
+
               }
               else{
                 score += 1;
+                sendSuccess()
               }
 
 
@@ -416,9 +419,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
    if (inside_bin == 0){
      if(myjson[shots-1]["result"] == 1){
        score -= 1;
+       sendFailure()
      }
      else if(myjson[shots-1]["result"] == 0){
        score += 1;
+       sendSuccess()
      }
    }
    inside_bin = 0;
@@ -427,3 +432,26 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
  };
 });
+
+function sendSuccess() {
+  $(".notify").toggleClass("active");
+  $("#notifyType").toggleClass("success");
+  $("#notifyType").parent().css("background","#0a6e24");
+  
+  setTimeout(function(){
+    $(".notify").removeClass("active");
+    $("#notifyType").removeClass("success");
+  },2000);
+}
+
+function sendFailure() {
+  $(".notify").addClass("active");
+  $("#notifyType").addClass("failure");
+  $("#notifyType").parent().css("background","#d42c2c");
+
+  
+  setTimeout(function(){
+    $(".notify").removeClass("active");
+    $("#notifyType").removeClass("failure");
+  },2000);
+}
