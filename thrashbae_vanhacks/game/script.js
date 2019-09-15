@@ -253,11 +253,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
               if (myjson[shots-1]["result"] == 0){
                 score -= 1;
                   sendFailure();
+                  $("#bad")[0].play();
 
               }
               else{
                 score += 1;
                   sendSuccess();
+                  $("#good")[0].play();
               }
 
 
@@ -421,10 +423,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
      if(myjson[shots-1]["result"] == 1){
        score -= 1;
         sendFailure();
+        $("#bad")[0].play();
      }
      else if(myjson[shots-1]["result"] == 0){
        score += 1;
         sendSuccess();
+        $("#good")[0].play();
      }
    }
 
