@@ -2,35 +2,32 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>Amusement Park - Pure CSS</title>
-  <link rel="stylesheet" href="./style_1.css">
+  <title>Daily UI#011 | Flash Message (Error/Success)</title>
+  <link rel="stylesheet" href="./style_1.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+
 </head>
 <body>
 <!-- partial:index.partial.html -->
-
-<div class="container">
-  <div class="floor"></div>
-  <div class="pattern"></div>
-  <div class="leftTree">
-    <div></div><div></div>
+<div id="container">
+  <div id="success-box">
+    <div class="dot"></div>
+    <div class="dot two"></div>
+    <div class="face">
+      <div class="eye"></div>
+      <div class="eye right"></div>
+      <div class="mouth happy"></div>
+    </div>
+    <div class="shadow scale"></div>
+    <div class="message"><h1 class="alert">Success!</h1><p>yay, everything is working.</p></div>
+    <button class="button-box"><h1 class="green">continue</h1></button>
   </div>
-  <div class="centerTree">
-    <div></div>
-  </div>
-  <div class="rightTree"></div>
-
-  <div class="booth">
-    <div class="ticket"><span>&#9733</span> TICKET <span>&#9733</span></div>
-  </div>
-  <div class="boothShadow"></div>
-
-  <div class="sun"></div>
-  <div class="cloudLeft"></div>
-  <div class="cloudRight"></div>
-
+  
 </div>
+
+<footer>
+  <p>made by <a href="https://codepen.io/juliepark"> julie</a> ♡
+</footer>
 <!-- partial -->
-  <script  src="./script_1.js"></script>
 
 </body>
 </html>
