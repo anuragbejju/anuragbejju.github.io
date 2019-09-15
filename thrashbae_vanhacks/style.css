@@ -14,9 +14,9 @@ div {
 
 #logo{
 
-height:200px;
-width:200px;
+height:160px;
+width:160px;
 content:url('logo.png');
-top:10%;
-left:20%;
+top:12%;
+left:28%;
 };

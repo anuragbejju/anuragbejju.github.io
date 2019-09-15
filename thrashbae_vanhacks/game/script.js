@@ -6,7 +6,7 @@ On init
 
 // wait until DOM is ready
 var myjson;
-$.getJSON("https://anuragbejju.github.io/app/svg_file.json", function(json){
+$.getJSON("https://anuragbejju.github.io/thrashbae_vanhacks/game/svg_file.json", function(json){
 myjson = json;
 });
 
@@ -437,7 +437,7 @@ function sendSuccess() {
   $(".notify").toggleClass("active");
   $("#notifyType").toggleClass("success");
   $("#notifyType").parent().css("background","#0a6e24");
-  
+
   setTimeout(function(){
     $(".notify").removeClass("active");
     $("#notifyType").removeClass("success");
@@ -449,7 +449,7 @@ function sendFailure() {
   $("#notifyType").addClass("failure");
   $("#notifyType").parent().css("background","#d42c2c");
 
-  
+
   setTimeout(function(){
     $(".notify").removeClass("active");
     $("#notifyType").removeClass("failure");
