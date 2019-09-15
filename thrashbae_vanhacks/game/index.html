@@ -5,22 +5,10 @@
   <title>Shooting Hoops</title>
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./style_1.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script>
-	var jQuery_1_12_4 = $.noConflict(true);
-	jQuery_1_12_4(function() {
-	// this initializes the dialog (and uses some common options that I do)
-	jQuery_1_12_4("#dialog").dialog({autoOpen : false, modal : true, show : "blind", hide : "blind"});
-
-	// next add the onclick handler
-	jQuery_1_12_4("#instruction-title").click(function() {
-		jQuery_1_12_4("#dialog").dialog("open");
-		return false;
-		});
-	});
-  </script>
 </head>
 <body>
 <!-- partial:index.partial.html -->
@@ -204,8 +192,10 @@
 	</p>
 </div>
 
+<div id="finishdialog" title="Your Score Is">
+</div>
+
 <!-- partial -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="svg_file.json"></script>
 <script src="https://d3js.org/d3.v3.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js'></script>

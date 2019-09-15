@@ -10,6 +10,8 @@ $.getJSON("https://anuragbejju.github.io/thrashbae_vanhacks/game/svg_file.json",
 myjson = json;
 });
 
+var jQuery_1_12_4 = jQuery.noConflict(true);
+
 document.addEventListener("DOMContentLoaded", function(event) {
 
  // wait until window, stylesheets, images, links, and other media assets are loaded
@@ -250,12 +252,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
               inside_bin = 1;
               if (myjson[shots-1]["result"] == 0){
                 score -= 1;
-                sendFailure()
+                if (shots != 10) {
+                  sendFailure()
+                 }
 
               }
               else{
                 score += 1;
-                sendSuccess()
+                if (shots != 10) {
+                  sendSuccess()
+                 }
               }
 
 
@@ -321,6 +327,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
    shots += 1;
 
+
    scale.play(0)
 
    // Limit how hard the ball can be thrown. Improves user accuracy diminishes realistic movement
@@ -382,8 +389,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   };
 
 
-
-
   function getSpeed(e) {
 
    e.preventDefault();
@@ -419,14 +424,25 @@ document.addEventListener("DOMContentLoaded", function(event) {
    if (inside_bin == 0){
      if(myjson[shots-1]["result"] == 1){
        score -= 1;
-       sendFailure()
+       if (shots != 10) {
+        sendFailure()
+       }
      }
      else if(myjson[shots-1]["result"] == 0){
        score += 1;
-       sendSuccess()
+       if (shots != 10) {
+        sendFailure()
+       }
      }
    }
+
    inside_bin = 0;
+   if (shots == 10){
+
+    var contents_finish = `<div class="finish-message"><p><Strong>Score:`+score.toString()+`</Strong></p><br/><br/><button onclick="location.reload()" class="finish-button">Play Again</button></div>`;
+    setTimeout(
+      jQuery_1_12_4("#finishdialog").html(contents_finish).dialog("open"), 1000)
+   }
    document.getElementById("shots").innerHTML = "Shots: " + shots;
    document.getElementById("hits").innerHTML = "Score: " + score;
   }
@@ -455,3 +471,19 @@ function sendFailure() {
     $("#notifyType").removeClass("failure");
   },2000);
 }
+
+
+
+jQuery_1_12_4(function() {
+  // this initializes the dialog (and uses some common options that I do)
+  jQuery_1_12_4("#dialog").dialog({autoOpen : false, modal : true, show : "blind", hide : "blind"});
+  // next add the onclick handler
+  jQuery_1_12_4("#instruction-title").click(function(){
+    jQuery_1_12_4("#dialog").dialog("open");
+    return false;
+  });
+});
+
+jQuery_1_12_4(function() {
+  jQuery_1_12_4("#finishdialog").dialog({autoOpen : false, modal : true, show : "blind", hide : "blind"});
+});
