@@ -25,7 +25,7 @@ svg {
 }
 
 .stage {
-  background: #feebcb;
+  background: none;
   height: 100%;
   overflow: hidden;
   position: relative;
@@ -78,9 +78,9 @@ li {
 }
 
 .copy {
-  background: #414042;
+  background: #b71540;
   box-shadow: 0 0 1px #633a26;
-  color: #adafb3;
+  color: #ffffff;
   font-family: 'Kameron', serif;
   font-size: 1rem;
   left: 0;
@@ -90,9 +90,22 @@ li {
   text-align: center;
   text-transform: uppercase;
   width: 100%;
+  z-index: 10000;
 }
 
 .instructions {
   bottom: 0;
   font-size: 1rem;
+  background: #b71540;
+}
+
+#dialog{
+  background: #079992;
+  color: #ffffff;
+}
+
+
+
+.ui-widget {
+background: #F9F9F9;
 }

@@ -424,7 +424,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
    inside_bin = 0;
    document.getElementById("shots").innerHTML = "Shots: " + shots;
    document.getElementById("hits").innerHTML = "Score: " + score;
-   document.getElementById("accuracy").innerHTML = "Accuracy: " + Math.round(accuracy * 100) + "%"
   }
  };
 });

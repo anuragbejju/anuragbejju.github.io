@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <title>Shooting Hoops</title>
   <link rel="stylesheet" href="./style.css">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="./style_1.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
@@ -23,7 +24,33 @@
 </head>
 <body>
 <!-- partial:index.partial.html -->
+
+
 <div class="stage">
+
+  <div class="container">
+    <div class="floor"></div>
+    <div class="pattern"></div>
+    <div class="logo"></div>
+    <div class="leftTree">
+      <div></div><div></div>
+    </div>
+
+    <div class="centerTree">
+      <div></div>
+    </div>
+    <div class="rightTree"></div>
+
+    <div class="booth">
+      <div class="ticket"><span>&#9733</span> TICKET <span>&#9733</span></div>
+    </div>
+    <div class="boothShadow"></div>
+
+    <div class="sun"></div>
+    <div class="cloudLeft"></div>
+    <div class="cloudRight"></div>
+
+  </div>
 
 <svg version="1.1" id="basket" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMin"  x="0px" y="0px"
 	 viewBox="0 0 402.001 402.001" style="enable-background:new 0 0 512.001 512.001;" xml:space="preserve">
@@ -160,10 +187,9 @@
 <ul class="copy">
  <li id="shots">Shots: 0</li>
  <li id="hits">Score: 0</li>
- <li id="accuracy">Accuracy: 0%</li>
 </ul>
 
-<p id="instruction-title" class="copy instructions">Flick to shoot - Click/Touch to move the item <br/> (Click Here For More Instructions) </p>
+<p id="instruction-title" class="copy instructions">Flick to shoot - Click/Touch to move the item (Click Here For More Instructions) </p>
 
 <div id="dialog" title="Instructions">
 	<p>
@@ -183,6 +209,6 @@
 <script src="https://d3js.org/d3.v3.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js'></script>
 <script  src="./script.js"></script>
-
+<script  src="./script_1.js"></script>
 </body>
 </html>
