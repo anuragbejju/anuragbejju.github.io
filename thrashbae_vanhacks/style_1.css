@@ -17,6 +17,7 @@ body {
   width: 25%;
   height: 60px;
   content:url('vanhacks.png');
+  z-index:100000;
 }
 
 .FollowMe {
