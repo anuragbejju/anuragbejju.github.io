@@ -435,7 +435,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
    inside_bin = 0;
    if (shots == 10){
 
-    var contents_finish = `<div class="finish-message"><p><Strong>Score:`+score.toString()+`</Strong></p><br/><br/><button onclick="location.reload()" class="finish-button">Play Again</button></div>`;
+    var contents_finish = `<div class="finish-message"><p><Strong>Score:`+score.toString()+`</Strong><br/><b>Good Job! Learn more about recycling at: </b>
+          <br/>  <a href="https://recyclebc.ca/what-can-i-recycle/">More information!</a>
+    <br/></p><button onclick="location.reload()" class="finish-button">Play Again</button></div>`;
     setTimeout(
       jQuery_1_12_4("#finishdialog").html(contents_finish).dialog("open"), 2500)
    }
