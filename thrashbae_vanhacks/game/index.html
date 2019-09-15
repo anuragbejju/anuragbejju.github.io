@@ -12,8 +12,9 @@
 </head>
 <body>
 <!-- partial:index.partial.html -->
-
-
+<audio src="sound/background.mp3" autoplay>
+<embed src="sound/background.mp3" width="180" height="90" hidden="true" />
+</audio>
 <div class="stage">
 
   <div class="container">
@@ -201,5 +202,23 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js'></script>
 <script  src="./script.js"></script>
 <script  src="./script_1.js"></script>
+<script>
+var x = document.getElementById("myAudio");
+
+function enableLoop() {
+  x.loop = true;
+  x.load();
+}
+enableLoop();
+
+function disableLoop() {
+  x.loop = false;
+  x.load();
+}
+
+function checkLoop() {
+  alert(x.loop);
+}
+</script>
 </body>
 </html>

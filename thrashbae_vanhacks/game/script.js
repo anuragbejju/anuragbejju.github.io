@@ -252,16 +252,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
               inside_bin = 1;
               if (myjson[shots-1]["result"] == 0){
                 score -= 1;
-                if (shots != 10) {
-                  sendFailure()
-                 }
+                  sendFailure();
 
               }
               else{
                 score += 1;
-                if (shots != 10) {
-                  sendSuccess()
-                 }
+                  sendSuccess();
               }
 
 
@@ -424,15 +420,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
    if (inside_bin == 0){
      if(myjson[shots-1]["result"] == 1){
        score -= 1;
-       if (shots != 10) {
-        sendFailure()
-       }
+        sendFailure();
      }
      else if(myjson[shots-1]["result"] == 0){
        score += 1;
-       if (shots != 10) {
-        sendFailure()
-       }
+        sendSuccess();
      }
    }
 
@@ -441,7 +433,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     var contents_finish = `<div class="finish-message"><p><Strong>Score:`+score.toString()+`</Strong></p><br/><br/><button onclick="location.reload()" class="finish-button">Play Again</button></div>`;
     setTimeout(
-      jQuery_1_12_4("#finishdialog").html(contents_finish).dialog("open"), 1000)
+      jQuery_1_12_4("#finishdialog").html(contents_finish).dialog("open"), 2500)
    }
    document.getElementById("shots").innerHTML = "Shots: " + shots;
    document.getElementById("hits").innerHTML = "Score: " + score;
