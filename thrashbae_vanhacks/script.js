@@ -9,6 +9,7 @@ var myjson;
 $.getJSON("https://anuragbejju.github.io/app/svg_file.json", function(json){
 myjson = json;
 });
+
 document.addEventListener("DOMContentLoaded", function(event) {
 
  // wait until window, stylesheets, images, links, and other media assets are loaded
@@ -30,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
    _y: 0,
 
    create: function(x, y) {
+
 
    var obj = Object.create(this);
    obj.setX(x);
@@ -131,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       w,
       h;
 
+
   // Motion vars
   var p,
       start,
@@ -146,7 +149,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var shots = 0,
       hits = 0,
       score = 0,
-      accuracy = 0;
+      accuracy = 0,
+      inside_bin = 0;
 
 
 
@@ -224,6 +228,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
   function tick() {
+
    var currY = p.position.getY();
    var currX = p.position.getX();
 
@@ -258,18 +263,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
             } else if(currX <= basketWidth && currX >= -basketWidth) {
               // Yes
-              score += 2;
+
               hits += 1;
 
-             // Three pointer?
-             if(force.getX() > 2 || force.getX() < -2) {
-              score += 1;
-             }
+              inside_bin = 1;
+              if (myjson[shots-1]["result"] == 0){
+                score -= 1;
+              }
+              else{
+                score += 1;
+              }
 
 
              TweenMax.to("#net", 1, {scaleY:1.1, transformOrigin:"50% 0", ease:Elastic.easeOut});
              TweenMax.to("#net", 0.3, {scale:1, transformOrigin:"50% 0", ease:Power2.easeInOut, delay:0.6});
             }
+
           }
         }
       }
@@ -292,6 +301,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
   function grabBall(e) {
+
 
    e.preventDefault();
 
@@ -420,8 +430,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
    dy = currMouse.y - lastMouse.y;
 
    // Let's make the angle less steep
-   dy *= 2;
-   dx /= 2;
+   dy *= 8;
+   dx /= 8;
 
    timestamp = now;
    lastMouse = currMouse;
@@ -436,8 +446,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
   function updateScore() {
-   accuracy = hits / shots;
+    d3.select("#ball").html(myjson[shots%10][1]).attr("viewBox", myjson[shots%10]["viewBox"]);
 
+   accuracy = hits / shots;
+   if (inside_bin == 0){
+     if(myjson[shots-1]["result"] == 1){
+       score -= 1;
+     }
+     else if(myjson[shots-1]["result"] == 0){
+       score += 1;
+     }
+   }
+   inside_bin = 0;
    document.getElementById("shots").innerHTML = "Shots: " + shots;
    document.getElementById("hits").innerHTML = "Score: " + score;
    document.getElementById("accuracy").innerHTML = "Accuracy: " + Math.round(accuracy * 100) + "%"
