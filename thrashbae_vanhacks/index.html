@@ -4,12 +4,26 @@
   <meta charset="UTF-8">
   <title>Shooting Hoops</title>
   <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+	var jQuery_1_12_4 = $.noConflict(true);
+	jQuery_1_12_4(function() {
+	// this initializes the dialog (and uses some common options that I do)
+	jQuery_1_12_4("#dialog").dialog({autoOpen : false, modal : true, show : "blind", hide : "blind"});
+
+	// next add the onclick handler
+	jQuery_1_12_4("#instruction-title").click(function() {
+		jQuery_1_12_4("#dialog").dialog("open");
+		return false;
+		});
+	});
+  </script>
 </head>
 <body>
 <!-- partial:index.partial.html -->
 <div class="stage">
-
-
 
 <svg version="1.1" id="basket" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMin"  x="0px" y="0px"
 	 viewBox="0 0 402.001 402.001" style="enable-background:new 0 0 512.001 512.001;" xml:space="preserve">
@@ -117,11 +131,6 @@
 </g>
 </svg>
 
-
-
-
-
-
 <svg version="1.1" id="ball" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  preserveAspectRatio="xMidYMin"  x="0px" y="0px"
 	 viewBox="-20 -170 390 570" style="enable-background:new 0 0 56 56;" xml:space="preserve">
    	<g>
@@ -145,9 +154,6 @@
    	</g>
 </svg>
 
-
-
-
 </div>
 
 
@@ -157,14 +163,26 @@
  <li id="accuracy">Accuracy: 0%</li>
 </ul>
 
-<p class="copy instructions">Flick to shoot - Click/Touch and drag to move the ball</p>
+<p id="instruction-title" class="copy instructions">Flick to shoot - Click/Touch to move the item <br/> (Click Here For More Instructions) </p>
+
+<div id="dialog" title="Instructions">
+	<p>
+		Flick to throw the item into the recycle bin if you think it's recyclable, or click to discard it otherwise.
+		<br/>
+		<br/>
+		Score +1 for correct shooting/ discard.
+		<br/>
+		Score -1 for incorrect shooting/ discard.
+		<br/>
+	</p>
+</div>
+
 <!-- partial -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="svg_file.json"></script>
 <script src="https://d3js.org/d3.v3.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js'></script>
 <script  src="./script.js"></script>
-
 
 </body>
 </html>

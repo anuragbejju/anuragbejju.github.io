@@ -22,9 +22,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   Things we are going to need
   **************************** */
 
-
-
-
   // A Vector
   var Vector = {
    _x: 1,
@@ -164,11 +161,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   // Wait a second before fading the elements in to prevent a flash of unpositioned/unstyled content
   TweenMax.to(".stage", 1, {autoAlpha:1, delay:1});
 
-
-
-
-
-
   function addEvents() {
 
    ball.addEventListener("mousedown", grabBall);
@@ -178,9 +170,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   }
 
-
-
-
   function removeEvents() {
 
    ball.removeEventListener("mousedown", grabBall);
@@ -189,9 +178,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
    ball.removeEventListener("touchend", releaseBall);
 
   }
-
-
-
 
   function resize() {
 
@@ -225,8 +211,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
 
-
-
   function tick() {
 
    var currY = p.position.getY();
@@ -243,7 +227,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
        if(lastY < currY && force.getLength() > 15) {
          basket.style.zIndex = 1;
 
-
          // Has it hit the basket
          if(currY < 10 && currY > -10) {
            hasThrown = false;
@@ -258,8 +241,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
              p.velocity = force;
 
              basket.style.zIndex = 0;
-
-
 
             } else if(currX <= basketWidth && currX >= -basketWidth) {
               // Yes
@@ -296,10 +277,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   };
 
-
-
-
-
   function grabBall(e) {
 
 
@@ -313,9 +290,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
    document.addEventListener("touchmove", moveBall);
   };
 
-
-
-
   function moveBall(e) {
 
    e.preventDefault();
@@ -326,9 +300,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
    TweenMax.set(ball, {x:p.position.getX(), y:p.position.getY()});
 
   };
-
-
-
 
   function releaseBall() {
 
@@ -369,8 +340,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   };
 
 
-
-
   function reset() {
 
    TweenMax.ticker.removeEventListener("tick", tick);
@@ -398,8 +367,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
    });
 
   };
-
-
 
 
   function getMouse(e) {
@@ -441,9 +408,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
    p.position.setY(getMouse(e).y - start.getY());
 
   };
-
-
-
 
   function updateScore() {
     d3.select("#ball").html(myjson[shots%10][1]).attr("viewBox", myjson[shots%10]["viewBox"]);
