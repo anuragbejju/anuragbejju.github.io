@@ -10,7 +10,7 @@ a,
 ul,
 ol,
 li {
-		font-size: 13px;
+		font-size: 1.0em;
 }
 
 a {
@@ -98,7 +98,7 @@ footer {
 }
 
 footer p {
-		font-size: 12px;
+		font-size:  0.95em;
 		float: left;
 		padding-top: 4px;
 		padding-left: 190px;
@@ -111,7 +111,7 @@ footer ul {
 }
 
 footer li {
-		font-size: 12px;
+		font-size:  0.95em;
 		display: inline-block;
 		padding: 4px;
 		padding-right: 10px;
@@ -141,16 +141,17 @@ footer li:focus {
 		padding: 10px;
 		margin-left: 180px;
 		color: #e6db74;
+		font-size:1.1em;
 }
 
 .page p {
 		color: #e6db74;
-		font-size: 13.5px;
+		font-size:  1.3em;
 		font-family: monospace;
 }
 .page u {
 		font-family: monospace;
-		font-size:14px;
+		font-size:1.3em;
 }
 
 .active {
@@ -220,7 +221,7 @@ footer li:focus {
 #heading {
 	color: #bdc3c7;
 	font-weight: bold;
-	font-size: 18px;
+	font-size:  1.3em;
 	font-family:  monospace;
 	text-align: center;
 	text-decoration: underline;
@@ -230,7 +231,7 @@ footer li:focus {
 #heading_color {
 	color: #1abc9c;
 	font-weight: bold;
-	font-size: 15px;
+	font-size:  1.2em;
 	font-family:  monospace;
 	text-align:left;
 }
@@ -238,7 +239,7 @@ footer li:focus {
 #heading_color_sub {
 	color: #66d9ef;
 	font-weight: bold;
-	font-size: 14px;
+	font-size: 1.1em;
 	font-family:  monospace;
 	text-align:left;
 }
@@ -247,12 +248,12 @@ footer li:focus {
 	color: #e12569;
 	float: right;
 	font-weight: bold;
-	font-size: 14px;
+	font-size:  1.1em;
 	font-family:  monospace;
 }
 
 #high {
-	font-size: 16px;
+	font-size:  1.3em;
 	font-weight: bold;
 	font-family:  monospace;
 	width:15%;
@@ -273,7 +274,7 @@ footer li:focus {
 .divTableCell, .divTableHead {
 	display: table-cell;
 	padding: 3px 10px;
-	font-size: 14px;
+	font-size:  0.95em;
 	font-family:  monospace;
 	text-align:left;
 }
