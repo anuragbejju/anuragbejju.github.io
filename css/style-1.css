@@ -137,10 +137,10 @@ body {
 .container .logo p.test {
   float: right;
   width:135px;
-  height:115px;
-  -moz-transform: scale(0.80);
-  -webkit-transform: scale(0.80);
-  transform: scale(0.88);
+  height:105px;
+  -moz-transform: scale(0.64);
+  -webkit-transform: scale(0.64);
+  transform: scale(0.68);
   content: url('logo.png');
 }
 
