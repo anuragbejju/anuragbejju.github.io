@@ -36,6 +36,7 @@ header h1 {
 		margin-top: 0px;
 		text-align: center;
 		font-weight: bold;
+		font-size: 1.9em;
 
 }
 
@@ -57,6 +58,7 @@ nav {
 		height: 100%;
 		width: 180px;
 		background-color: #47484b;
+		font-size: 1.0em;
 }
 
 nav h2 {
@@ -66,6 +68,8 @@ nav h2 {
 		padding-left: 10px;
 		background-color: #3c3f41;
 		color: #adb9bd;
+		font-size:  0.9em;
+		margin-bottom:0px;
 }
 
 nav ul {
@@ -73,6 +77,8 @@ nav ul {
 		padding-bottom: 20px;
 		background-color: #3c3f41;
 		border-bottom: 1px solid #4f5053;
+		font-size:  0.9em;
+		margin-top:0px;
 }
 
 nav a {
@@ -80,6 +86,7 @@ nav a {
 		width: 148px;
 		padding: 2px;
 		padding-left: 30px;
+		font-size:  0.9em;
 }
 
 nav a:hover,
@@ -190,7 +197,9 @@ footer li:focus {
 #page-5,
 #page-6,
 #page-7,
-#page-8
+#page-8,
+#page-9,
+#page-10
  {
 		display: none;
 		height:85vh;

@@ -24,7 +24,7 @@ function loadButtons() {
 								for (var x = 0; x < pages.length; x++) {
 										pages[x].style.display = "none";
 								}
-								
+
 
 
 								if (url == "") {
@@ -51,6 +51,14 @@ function loadButtons() {
 								}
 								else if (url == "eca") {
 										s("#page-8").style.display = "block";
+
+								}
+								else if (url == "po") {
+										s("#page-9").style.display = "block";
+
+								}
+								else if (url == "cu") {
+										s("#page-10").style.display = "block";
 
 								}
 						}
