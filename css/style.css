@@ -253,6 +253,22 @@ footer li:focus {
 	text-align:left;
 }
 
+#heading_color_sub_intro {
+	color: #e12569;
+	font-weight: bold;
+	font-size: 3em;
+	font-family:  monospace;
+	text-align:left;
+}
+
+#heading_color_sub_intro_full {
+	color: #e6db74;
+	font-size: 1.6em;
+	font-family:  monospace;
+	text-align:justify;
+}
+
+
 #heading_color_date {
 	color: #e12569;
 	float: right;

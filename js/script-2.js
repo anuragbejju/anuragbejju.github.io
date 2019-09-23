@@ -1,5 +1,6 @@
 $(".col").click(function() {
-  window.location = $(this).find("a").attr("href");
+  
+  window.open($(this).find("a").attr("href"), '_blank');
   return false;
 });
 
