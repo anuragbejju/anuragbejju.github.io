@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Tycoon - Bidding Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        
+        .tab-container {
+            display: flex;
+            background: #f0f0f0;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            background: #e0e0e0;
+            border: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .tab:hover {
+            background: #d0d0d0;
+        }
+        
+        .tab.active {
+            background: white;
+            color: #2a5298;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .tier-section {
+            display: none;
+        }
+        
+        .tier-section.active {
+            display: block;
+        }
+        
+        .asset-card {
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .asset-card.sold {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+        
+        .asset-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .asset-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .asset-price {
+            font-size: 1.2em;
+            color: #2a5298;
+            font-weight: bold;
+        }
+        
+        .bid-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .bid-display {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            background: white;
+            border: 2px solid #2a5298;
+            border-radius: 5px;
+            min-width: 100px;
+            text-align: center;
+            color: #2a5298;
+        }
+        
+        .team-select {
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            min-width: 120px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #45a049;
+        }
+        
+        .btn-secondary {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #e68900;
+        }
+        
+        .btn-danger {
+            background: #f44336;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #da190b;
+        }
+        
+        .sold-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        
+        .team-balances {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .balance-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .balance-team {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .balance-amount {
+            font-size: 1.5em;
+        }
+        
+        .leaderboard {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 8px;
+            border-left: 5px solid #2a5298;
+        }
+        
+        .leaderboard-item.first {
+            border-left-color: #ffd700;
+            background: #fffef7;
+        }
+        
+        .leaderboard-item.second {
+            border-left-color: #c0c0c0;
+        }
+        
+        .leaderboard-item.third {
+            border-left-color: #cd7f32;
+        }
+        
+        .error {
+            color: #f44336;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        
+        .success {
+            color: #4caf50;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        
+        .increment-info {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .team-setup {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .team-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .team-label {
+            font-weight: bold;
+            min-width: 80px;
+            color: #333;
+        }
+        
+        .team-name-input {
+            flex: 1;
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .setup-actions {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .btn-large {
+            padding: 15px 40px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏆 Asset Tycoon - Bidding Game</h1>
+            <div class="game-info">
+                <div>7 Teams | Starting Credit: $20M each</div>
+                <div>Objective: Build the highest value portfolio</div>
+                <div>Rule: Must buy at least 1 item from each tier</div>
+            </div>
+        </header>
+        
+        <div class="tab-container">
+            <button class="tab active" onclick="showTab('setup')">Team Setup</button>
+            <button class="tab" onclick="showTab('tierA')">Tier A - Real Estate</button>
+            <button class="tab" onclick="showTab('tierB')">Tier B - Companies</button>
+            <button class="tab" onclick="showTab('tierC')">Tier C - Movable Assets</button>
+            <button class="tab" onclick="showTab('balances')">Team Balances</button>
+            <button class="tab" onclick="showTab('leaderboard')">Leaderboard</button>
+        </div>
+        
+        <div class="content">
+            <div id="setup" class="tier-section active"></div>
+            <div id="tierA" class="tier-section"></div>
+            <div id="tierB" class="tier-section"></div>
+            <div id="tierC" class="tier-section"></div>
+            <div id="balances" class="tier-section"></div>
+            <div id="leaderboard" class="tier-section"></div>
+        </div>
+    </div>
+
+    <script>
+        const numTeams = 7;
+        const startingBalance = 20;
+        
+        let teams = [];
+        let teamBalances = {};
+        let teamAssets = {};
+        let assetSales = {};
+        let currentBids = {};
+        let gameStarted = false;
+        
+        // Initialize with default team names
+        for (let i = 1; i <= numTeams; i++) {
+            teams.push(`Team ${i}`);
+        }
+        
+        teams.forEach(team => {
+            teamBalances[team] = startingBalance;
+            teamAssets[team] = { tierA: 0, tierB: 0, tierC: 0, total: 0 };
+        });
+        
+        const assets = {
+            tierA: {
+                title: 'Tier A - Real Estate',
+                increment: 0.5,
+                items: [
+                    { id: 'A1', name: 'Manhattan Skyscraper', base: 8.0 },
+                    { id: 'A2', name: 'Dubai Marina Penthouse', base: 7.5 },
+                    { id: 'A3', name: 'London Mansion', base: 7.0 },
+                    { id: 'A4', name: 'Malibu Beach Villa', base: 6.5 },
+                    { id: 'A5', name: 'Paris Apartment Complex', base: 6.0 },
+                    { id: 'A6', name: 'Tokyo Commercial Building', base: 5.5 },
+                    { id: 'A7', name: 'Swiss Alps Chalet', base: 5.0 },
+                    { id: 'A8', name: 'Singapore Luxury Condo', base: 4.5 }
+                ]
+            },
+            tierB: {
+                title: 'Tier B - Companies',
+                increment: 0.2,
+                items: [
+                    { id: 'B1', name: 'Pharma Research Firm', base: 4.1 },
+                    { id: 'B2', name: 'Electric Vehicle Firm', base: 4.0 },
+                    { id: 'B3', name: 'Renewable Energy Co.', base: 3.9 },
+                    { id: 'B4', name: 'Movie Studio', base: 3.8 },
+                    { id: 'B5', name: 'Social Media Platform', base: 3.6 },
+                    { id: 'B6', name: 'Tech Startup', base: 3.5 },
+                    { id: 'B7', name: 'Fintech Company', base: 3.3 },
+                    { id: 'B8', name: 'Coffee Chain', base: 3.2 },
+                    { id: 'B9', name: 'Fashion Label', base: 2.8 },
+                    { id: 'B10', name: 'Logistics Firm', base: 2.5 },
+                    { id: 'B11', name: 'Restaurant Group', base: 2.4 },
+                    { id: 'B12', name: 'Esports Franchise', base: 2.2 }
+                ]
+            },
+            tierC: {
+                title: 'Tier C - Movable Assets',
+                increment: 0.1,
+                items: [
+                    { id: 'C1', name: 'Superyacht', base: 2.2 },
+                    { id: 'C2', name: 'Private Jet', base: 2.0 },
+                    { id: 'C3', name: '100kg Gold Reserve', base: 1.8 },
+                    { id: 'C4', name: 'Picasso Painting', base: 1.6 },
+                    { id: 'C5', name: 'Vintage Car Collection', base: 1.5 },
+                    { id: 'C6', name: 'Diamond Necklace', base: 1.4 },
+                    { id: 'C7', name: 'Private Island Speedboat', base: 1.3 },
+                    { id: 'C8', name: 'Rolls Royce Phantom', base: 1.2 },
+                    { id: 'C9', name: 'Crypto Portfolio', base: 1.1 },
+                    { id: 'C10', name: 'Ferrari SF90', base: 1.0 },
+                    { id: 'C11', name: 'High-end Wine Collection', base: 1.0 },
+                    { id: 'C12', name: 'Art Deco Sculpture', base: 0.9 },
+                    { id: 'C13', name: 'NFT Artwork', base: 0.8 },
+                    { id: 'C14', name: 'Designer Handbag Archive', base: 0.7 },
+                    { id: 'C15', name: 'Luxury Watch Set', base: 0.6 }
+                ]
+            }
+        };
+        
+        function renderSetup() {
+            const container = document.getElementById('setup');
+            let html = '<div class="team-setup">';
+            html += '<h2>Team Setup</h2>';
+            html += '<p style="margin-bottom: 20px; color: #666;">Enter custom names for each team (or keep the defaults):</p>';
+            
+            for (let i = 0; i < numTeams; i++) {
+                html += `
+                    <div class="team-input-group">
+                        <div class="team-label">Team ${i + 1}:</div>
+                        <input type="text" 
+                               class="team-name-input" 
+                               id="team-name-${i}" 
+                               value="${teams[i]}"
+                               placeholder="Enter team name"
+                               ${gameStarted ? 'disabled' : ''}>
+                    </div>
+                `;
+            }
+            
+            html += '<div class="setup-actions">';
+            if (!gameStarted) {
+                html += '<button class="btn btn-primary btn-large" onclick="startGame()">Start Game</button>';
+            } else {
+                html += '<p class="success" style="font-size: 1.2em;">✓ Game in progress! Team names are locked.</p>';
+                html += '<button class="btn btn-secondary" onclick="showTab(\'tierA\')">Go to Tier A</button>';
+            }
+            html += '</div>';
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+        
+        function startGame() {
+            const newTeams = [];
+            const newTeamBalances = {};
+            const newTeamAssets = {};
+            
+            // Collect new team names
+            for (let i = 0; i < numTeams; i++) {
+                const input = document.getElementById(`team-name-${i}`);
+                let teamName = input.value.trim();
+                
+                // Validate team name
+                if (!teamName) {
+                    teamName = `Team ${i + 1}`;
+                    input.value = teamName;
+                }
+                
+                // Check for duplicates
+                if (newTeams.includes(teamName)) {
+                    alert(`Duplicate team name detected: "${teamName}". Please use unique names.`);
+                    return;
+                }
+                
+                newTeams.push(teamName);
+                newTeamBalances[teamName] = startingBalance;
+                newTeamAssets[teamName] = { tierA: 0, tierB: 0, tierC: 0, total: 0 };
+            }
+            
+            // Update global variables
+            teams = newTeams;
+            teamBalances = newTeamBalances;
+            teamAssets = newTeamAssets;
+            gameStarted = true;
+            
+            // Re-render everything
+            renderSetup();
+            renderTier('tierA');
+            renderTier('tierB');
+            renderTier('tierC');
+            updateBalances();
+            updateLeaderboard();
+            
+            alert('Game started! Team names are now locked. You can begin bidding.');
+            showTab('tierA');
+        }
+        
+        function renderTier(tierId) {
+            const tier = assets[tierId];
+            const container = document.getElementById(tierId);
+            
+            let html = `<h2>${tier.title}</h2>`;
+            html += `<p class="increment-info">Recommended Bid Increment: $${tier.increment}M</p>`;
+            html += '<div style="margin-top: 20px;">';
+            
+            tier.items.forEach(item => {
+                const sale = assetSales[item.id];
+                const isSold = !!sale;
+                
+                html += `
+                    <div class="asset-card ${isSold ? 'sold' : ''}" id="card-${item.id}">
+                        <div class="asset-header">
+                            <div class="asset-name">${item.id} - ${item.name}</div>
+                            <div class="asset-price">Base: $${item.base.toFixed(1)}M</div>
+                        </div>
+                        ${!isSold ? `
+                        <div class="bid-controls">
+                            <button class="btn btn-secondary" onclick="decrementBid('${item.id}', ${tier.increment}, ${item.base})">−</button>
+                            <div class="bid-display" id="bid-${item.id}">$${item.base.toFixed(1)}M</div>
+                            <button class="btn btn-secondary" onclick="incrementBid('${item.id}', ${tier.increment})">+</button>
+                            <select class="team-select" id="team-${item.id}">
+                                <option value="">Select Team</option>
+                                ${teams.map(t => `<option value="${t}">${t}</option>`).join('')}
+                            </select>
+                            <button class="btn btn-primary" onclick="recordBid('${item.id}', ${item.base}, '${tierId}')">
+                                Record Bid
+                            </button>
+                        </div>
+                        <div id="msg-${item.id}"></div>
+                        ` : `
+                        <div class="sold-info">
+                            ✓ SOLD to ${sale.team} for $${sale.amount.toFixed(1)}M
+                            <button class="btn btn-danger" style="margin-left: 10px;" onclick="undoBid('${item.id}', '${tierId}')">
+                                Undo
+                            </button>
+                        </div>
+                        `}
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+        
+        function incrementBid(assetId, increment) {
+            if (!currentBids[assetId]) {
+                const tier = Object.values(assets).find(t => 
+                    t.items.some(item => item.id === assetId)
+                );
+                const item = tier.items.find(item => item.id === assetId);
+                currentBids[assetId] = item.base;
+            }
+            
+            currentBids[assetId] = Math.round((currentBids[assetId] + increment) * 10) / 10;
+            document.getElementById(`bid-${assetId}`).textContent = `$${currentBids[assetId].toFixed(1)}M`;
+        }
+        
+        function decrementBid(assetId, increment, basePrice) {
+            if (!currentBids[assetId]) {
+                currentBids[assetId] = basePrice;
+            }
+            
+            const newBid = Math.round((currentBids[assetId] - increment) * 10) / 10;
+            if (newBid >= basePrice) {
+                currentBids[assetId] = newBid;
+                document.getElementById(`bid-${assetId}`).textContent = `$${currentBids[assetId].toFixed(1)}M`;
+            }
+        }
+        
+        function recordBid(assetId, basePrice, tierId) {
+            const bidAmount = currentBids[assetId] || basePrice;
+            const team = document.getElementById(`team-${assetId}`).value;
+            const msgEl = document.getElementById(`msg-${assetId}`);
+            
+            msgEl.innerHTML = '';
+            
+            if (!team) {
+                msgEl.innerHTML = '<div class="error">Please select a team</div>';
+                return;
+            }
+            
+            if (!bidAmount || bidAmount < basePrice) {
+                msgEl.innerHTML = `<div class="error">Bid must be at least $${basePrice.toFixed(1)}M</div>`;
+                return;
+            }
+            
+            if (bidAmount > teamBalances[team]) {
+                msgEl.innerHTML = `<div class="error">${team} has insufficient funds (Available: $${teamBalances[team].toFixed(1)}M)</div>`;
+                return;
+            }
+            
+            teamBalances[team] -= bidAmount;
+            
+            const tierKey = tierId === 'tierA' ? 'tierA' : tierId === 'tierB' ? 'tierB' : 'tierC';
+            teamAssets[team][tierKey] += bidAmount;
+            teamAssets[team].total += bidAmount;
+            
+            assetSales[assetId] = {
+                team: team,
+                amount: bidAmount,
+                tier: tierKey
+            };
+            
+            renderTier(tierId);
+            updateBalances();
+            updateLeaderboard();
+            
+            msgEl.innerHTML = `<div class="success">✓ Bid recorded successfully!</div>`;
+        }
+        
+        function undoBid(assetId, tierId) {
+            const sale = assetSales[assetId];
+            if (!sale) return;
+            
+            if (confirm(`Undo sale of ${assetId} to ${sale.team} for $${sale.amount.toFixed(1)}M?`)) {
+                teamBalances[sale.team] += sale.amount;
+                teamAssets[sale.team][sale.tier] -= sale.amount;
+                teamAssets[sale.team].total -= sale.amount;
+                
+                delete assetSales[assetId];
+                
+                renderTier(tierId);
+                updateBalances();
+                updateLeaderboard();
+            }
+        }
+        
+        function updateBalances() {
+            const container = document.getElementById('balances');
+            let html = '<h2>Team Balances</h2><div class="team-balances">';
+            
+            teams.forEach(team => {
+                const balance = teamBalances[team];
+                const spent = startingBalance - balance;
+                html += `
+                    <div class="balance-card">
+                        <div class="balance-team">${team}</div>
+                        <div class="balance-amount">$${balance.toFixed(1)}M</div>
+                        <div style="font-size: 0.9em; margin-top: 5px;">Spent: $${spent.toFixed(1)}M</div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+        
+        function updateLeaderboard() {
+            const container = document.getElementById('leaderboard');
+            
+            const rankings = teams.map(team => {
+                const spent = startingBalance - teamBalances[team];
+                const tierACoverage = teamAssets[team].tierA > 0 ? '✓' : '✗';
+                const tierBCoverage = teamAssets[team].tierB > 0 ? '✓' : '✗';
+                const tierCCoverage = teamAssets[team].tierC > 0 ? '✓' : '✗';
+                const allTiersCovered = tierACoverage === '✓' && tierBCoverage === '✓' && tierCCoverage === '✓';
+                
+                return {
+                    team,
+                    spent,
+                    value: teamAssets[team].total,
+                    tierA: tierACoverage,
+                    tierB: tierBCoverage,
+                    tierC: tierCCoverage,
+                    allTiersCovered
+                };
+            }).sort((a, b) => b.value - a.value);
+            
+            let html = '<h2>🏆 Leaderboard - Total Asset Value</h2><div class="leaderboard">';
+            
+            rankings.forEach((rank, index) => {
+                const classes = index === 0 ? 'first' : index === 1 ? 'second' : index === 2 ? 'third' : '';
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+                const warning = !rank.allTiersCovered ? ' ⚠️ Missing tier requirement!' : '';
+                
+                html += `
+                    <div class="leaderboard-item ${classes}">
+                        <div>
+                            <strong>${medal} ${rank.team}</strong>
+                            <div style="font-size: 0.9em; color: #666; margin-top: 5px;">
+                                Spent: $${rank.spent.toFixed(1)}M | 
+                                Tier Coverage: A${rank.tierA} B${rank.tierB} C${rank.tierC}
+                                ${warning}
+                            </div>
+                        </div>
+                        <div style="font-size: 1.5em; font-weight: bold; color: #2a5298;">
+                            $${rank.value.toFixed(1)}M
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+        
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const sections = document.querySelectorAll('.tier-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Find and activate the clicked tab
+            tabs.forEach(tab => {
+                if (tab.textContent.toLowerCase().includes(tabName.toLowerCase()) || 
+                    (tabName === 'setup' && tab.textContent.includes('Setup'))) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+        }
+        
+        renderSetup();
+        renderTier('tierA');
+        renderTier('tierB');
+        renderTier('tierC');
+        updateBalances();
+        updateLeaderboard();
+    </script>
+</body>
+</html>

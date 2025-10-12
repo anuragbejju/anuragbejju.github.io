@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bingo Number Caller</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .controls {
+            margin-bottom: 30px;
+        }
+
+        .timer-control {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .timer-label {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .slider-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .timer-slider {
+            width: 100%;
+            max-width: 300px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timer-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .timer-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .timer-slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .timer-display {
+            margin-top: 10px;
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .speed-indicators {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 300px;
+            margin-top: 5px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .current-number {
+            font-size: 4em;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .announcement {
+            font-size: 1.5em;
+            margin: 15px 0;
+            min-height: 40px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .auto-call-active {
+            background: linear-gradient(45deg, #27ae60, #2ecc71) !important;
+            animation: pulse-button 2s infinite;
+        }
+
+        @keyframes pulse-button {
+            0% { box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4); }
+            50% { box-shadow: 0 6px 25px rgba(39, 174, 96, 0.8); }
+            100% { box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4); }
+        }
+
+        .bingo-board {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+
+        .number-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .number-cell.called {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            color: white;
+            transform: scale(1.1);
+            border-color: #fff;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin: 5px;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .called-numbers {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .called-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .called-number {
+            background: rgba(46, 204, 113, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .countdown-display {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #ffd700;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            min-height: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .bingo-board {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 6px;
+            }
+            
+            .current-number {
+                font-size: 3em;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+
+            .slider-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .timer-slider {
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Bingo Number Caller</h1>
+        
+        <div class="controls">
+            <button id="callNumber" onclick="callNextNumber()">Call Next Number</button>
+            <button id="resetGame" onclick="resetGame()">Reset Game</button>
+            <button id="autoCall" onclick="toggleAutoCall()">Start Auto Call</button>
+        </div>
+
+        <div class="timer-control">
+            <div class="timer-label">⏱️ Auto Call Speed Control</div>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <input type="range" 
+                           id="timerSlider" 
+                           class="timer-slider" 
+                           min="1" 
+                           max="10" 
+                           value="3" 
+                           step="0.5"
+                           oninput="updateTimerSpeed(this.value)">
+                    <div class="speed-indicators">
+                        <span>Fast (1s)</span>
+                        <span>Medium</span>
+                        <span>Slow (10s)</span>
+                    </div>
+                </div>
+                <div class="timer-display" id="timerDisplay">3.0 seconds</div>
+            </div>
+            <div class="countdown-display" id="countdownDisplay"></div>
+        </div>
+
+        <div class="current-number" id="currentNumber">
+            Ready to Start!
+        </div>
+
+        <div class="announcement" id="announcement">
+            Click "Call Next Number" to begin
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-number" id="numbersLeft">90</span>
+                <div>Numbers Left</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="numbersCalled">0</span>
+                <div>Numbers Called</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="gameProgress">0%</span>
+                <div>Progress</div>
+            </div>
+        </div>
+
+        <div class="bingo-board" id="bingoBoard"></div>
+
+        <div class="called-numbers">
+            <h3>📋 Called Numbers:</h3>
+            <div class="called-list" id="calledList"></div>
+        </div>
+    </div>
+
+    <script>
+        class BingoGame {
+            constructor() {
+                this.availableNumbers = [];
+                this.calledNumbers = [];
+                this.currentNumber = null;
+                this.autoCallInterval = null;
+                this.countdownInterval = null;
+                this.isAutoCall = false;
+                this.timerSpeed = 3; // Default 3 seconds
+                this.countdownValue = 0;
+                
+                this.initializeGame();
+                this.createBoard();
+                this.updateStats();
+            }
+
+            initializeGame() {
+                // Initialize available numbers 1-90
+                this.availableNumbers = [];
+                for (let i = 1; i <= 90; i++) {
+                    this.availableNumbers.push(i);
+                }
+                this.calledNumbers = [];
+                this.currentNumber = null;
+            }
+
+            createBoard() {
+                const board = document.getElementById('bingoBoard');
+                board.innerHTML = '';
+                
+                // Create 90 cells for numbers 1-90
+                for (let i = 1; i <= 90; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'number-cell';
+                    cell.textContent = i;
+                    cell.id = `cell-${i}`;
+                    board.appendChild(cell);
+                }
+            }
+
+            callNextNumber() {
+                if (this.availableNumbers.length === 0) {
+                    this.announceMessage("🎉 All numbers have been called! Game Complete!");
+                    this.stopAutoCall();
+                    return;
+                }
+
+                // Pick random number from available numbers
+                const randomIndex = Math.floor(Math.random() * this.availableNumbers.length);
+                const number = this.availableNumbers[randomIndex];
+                
+                // Remove from available and add to called
+                this.availableNumbers.splice(randomIndex, 1);
+                this.calledNumbers.push(number);
+                this.currentNumber = number;
+
+                // Update display
+                this.displayNumber(number);
+                this.markNumberOnBoard(number);
+                this.updateCalledList();
+                this.updateStats();
+                this.announceNumber(number);
+
+                // Reset countdown
+                this.resetCountdown();
+
+                // Check if game is complete
+                if (this.availableNumbers.length === 0) {
+                    setTimeout(() => {
+                        this.announceMessage("🎊 Congratulations! All 90 numbers called!");
+                        document.getElementById('callNumber').disabled = true;
+                        this.stopAutoCall();
+                    }, 2000);
+                }
+            }
+
+            displayNumber(number) {
+                const display = document.getElementById('currentNumber');
+                display.textContent = number;
+                display.style.animation = 'none';
+                setTimeout(() => {
+                    display.style.animation = 'pulse 0.5s ease-in-out';
+                }, 10);
+            }
+
+            markNumberOnBoard(number) {
+                const cell = document.getElementById(`cell-${number}`);
+                if (cell) {
+                    cell.classList.add('called');
+                }
+            }
+
+            announceNumber(number) {
+                const announcement = document.getElementById('announcement');
+                const bingoLetter = this.getBingoLetter(number);
+                announcement.textContent = `${bingoLetter} - ${number}`;
+                
+                // Optional: Use Speech Synthesis API if available
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(`${bingoLetter} ${number}`);
+                    utterance.rate = 0.8;
+                    utterance.pitch = 1.2;
+                    speechSynthesis.speak(utterance);
+                }
+            }
+
+            announceMessage(message) {
+                const announcement = document.getElementById('announcement');
+                announcement.textContent = message;
+                
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(message);
+                    speechSynthesis.speak(utterance);
+                }
+            }
+
+            getBingoLetter(number) {
+                if (number >= 1 && number <= 15) return 'B';
+                if (number >= 16 && number <= 30) return 'I';
+                if (number >= 31 && number <= 45) return 'N';
+                if (number >= 46 && number <= 60) return 'G';
+                if (number >= 61 && number <= 75) return 'O';
+                return 'EXTRA'; // For numbers 76-90
+            }
+
+            updateCalledList() {
+                const calledList = document.getElementById('calledList');
+                calledList.innerHTML = '';
+                
+                // Sort called numbers and display them
+                const sortedCalled = [...this.calledNumbers].sort((a, b) => a - b);
+                sortedCalled.forEach(number => {
+                    const span = document.createElement('span');
+                    span.className = 'called-number';
+                    span.textContent = number;
+                    calledList.appendChild(span);
+                });
+            }
+
+            updateStats() {
+                document.getElementById('numbersLeft').textContent = this.availableNumbers.length;
+                document.getElementById('numbersCalled').textContent = this.calledNumbers.length;
+                
+                const progress = Math.round((this.calledNumbers.length / 90) * 100);
+                document.getElementById('gameProgress').textContent = `${progress}%`;
+            }
+
+            updateTimerSpeed(speed) {
+                this.timerSpeed = parseFloat(speed);
+                document.getElementById('timerDisplay').textContent = `${speed} seconds`;
+                
+                // If auto call is active, restart it with new speed
+                if (this.isAutoCall) {
+                    this.stopAutoCall();
+                    this.startAutoCall();
+                }
+            }
+
+            startCountdown() {
+                this.countdownValue = Math.ceil(this.timerSpeed);
+                const countdownDisplay = document.getElementById('countdownDisplay');
+                
+                this.countdownInterval = setInterval(() => {
+                    if (this.countdownValue > 0) {
+                        countdownDisplay.textContent = `Next call in: ${this.countdownValue}s`;
+                        this.countdownValue--;
+                    } else {
+                        countdownDisplay.textContent = "Calling...";
+                    }
+                }, 1000);
+            }
+
+            resetCountdown() {
+                if (this.countdownInterval) {
+                    clearInterval(this.countdownInterval);
+                    this.countdownInterval = null;
+                }
+                
+                if (this.isAutoCall && this.availableNumbers.length > 0) {
+                    this.startCountdown();
+                } else {
+                    document.getElementById('countdownDisplay').textContent = '';
+                }
+            }
+
+            resetGame() {
+                this.stopAutoCall();
+                this.initializeGame();
+                this.createBoard();
+                this.updateStats();
+                
+                document.getElementById('currentNumber').textContent = 'Ready to Start!';
+                document.getElementById('announcement').textContent = 'Click "Call Next Number" to begin';
+                document.getElementById('calledList').innerHTML = '';
+                document.getElementById('countdownDisplay').textContent = '';
+                document.getElementById('callNumber').disabled = false;
+            }
+
+            toggleAutoCall() {
+                const button = document.getElementById('autoCall');
+                
+                if (this.isAutoCall) {
+                    this.stopAutoCall();
+                } else {
+                    this.startAutoCall();
+                }
+            }
+
+            startAutoCall() {
+                if (this.availableNumbers.length === 0) return;
+                
+                this.isAutoCall = true;
+                const button = document.getElementById('autoCall');
+                button.textContent = 'Stop Auto Call';
+                button.classList.add('auto-call-active');
+                document.getElementById('callNumber').disabled = true;
+                
+                // Start countdown
+                this.startCountdown();
+                
+                this.autoCallInterval = setInterval(() => {
+                    this.callNextNumber();
+                    if (this.availableNumbers.length === 0) {
+                        this.stopAutoCall();
+                    }
+                }, this.timerSpeed * 1000);
+            }
+
+            stopAutoCall() {
+                this.isAutoCall = false;
+                const button = document.getElementById('autoCall');
+                button.textContent = 'Start Auto Call';
+                button.classList.remove('auto-call-active');
+                document.getElementById('callNumber').disabled = false;
+                
+                if (this.autoCallInterval) {
+                    clearInterval(this.autoCallInterval);
+                    this.autoCallInterval = null;
+                }
+                
+                if (this.countdownInterval) {
+                    clearInterval(this.countdownInterval);
+                    this.countdownInterval = null;
+                }
+                
+                document.getElementById('countdownDisplay').textContent = '';
+            }
+        }
+
+        // Initialize the game
+        let bingoGame;
+
+        // Function to be called by buttons
+        function callNextNumber() {
+            bingoGame.callNextNumber();
+        }
+
+        function resetGame() {
+            bingoGame.resetGame();
+        }
+
+        function toggleAutoCall() {
+            bingoGame.toggleAutoCall();
+        }
+
+        function updateTimerSpeed(speed) {
+            bingoGame.updateTimerSpeed(speed);
+        }
+
+        // Initialize game when page loads
+        window.onload = function() {
+            bingoGame = new BingoGame();
+            
+            // Add CSS animation for pulse effect
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                    100% { transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+        };
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                event.preventDefault();
+                callNextNumber();
+            } else if (event.code === 'KeyR') {
+                event.preventDefault();
+                resetGame();
+            } else if (event.code === 'KeyA') {
+                event.preventDefault();
+                toggleAutoCall();
+            }
+        });
+    </script>
+</body>
+</html>
