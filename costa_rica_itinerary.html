@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Costa Rica Itinerary — Sept 6-13, 2026</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, 'Inter', 'Segoe UI', sans-serif; background:#f5f7fa; color:#1a2332; line-height:1.6; }
+  
+  .hero { background: linear-gradient(135deg, #1a5c2a 0%, #2d8a3a 50%, #4caf50 100%); padding:36px 20px; text-align:center; color:#fff; }
+  .hero h1 { font-size:32px; font-weight:700; }
+  .hero .sub { font-size:15px; opacity:.85; margin-top:4px; }
+
+  .container { max-width:1100px; margin:0 auto; padding:20px; }
+
+  .tabs { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
+  .tab { padding:10px 20px; border-radius:10px; font-size:15px; font-weight:600; cursor:pointer; background:#e4e7eb; color:#4a5568; border:none; transition:all .2s; }
+  .tab.active { background:#1a5c2a; color:#fff; box-shadow:0 2px 8px rgba(26,92,42,.3); }
+  .tab:hover:not(.active) { background:#d0d4da; }
+
+  .card { background:#fff; border:1px solid #e0e4e8; border-radius:12px; padding:20px 24px; margin-bottom:16px; box-shadow:0 1px 4px rgba(0,0,0,.04); }
+  .card h2 { font-size:20px; color:#1a2332; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+  .card h2 .badge { font-size:12px; background:#e4e7eb; padding:2px 10px; border-radius:20px; font-weight:500; color:#4a5568; }
+
+  .subtitle { font-size:14px; color:#64748b; margin-bottom:8px; }
+
+  .info-box { background:#f0f4f8; border-radius:8px; padding:12px 16px; margin:8px 0; font-size:15px; border-left:3px solid #3b82f6; }
+  .info-box.stay { border-left-color:#22c55e; }
+  .info-box.warn { border-left-color:#ef4444; background:#fef2f2; color:#991b1b; }
+
+  .act-item { border-bottom:1px solid #e4e7eb; padding:10px 0; cursor:pointer; }
+  .act-item:last-child { border-bottom:none; }
+  .act-header { display:flex; justify-content:space-between; align-items:center; font-size:15px; font-weight:500; }
+  .act-header .score { font-size:12px; padding:2px 10px; border-radius:20px; font-weight:600; }
+  .score-high { background:#dcfce7; color:#166534; }
+  .score-mid { background:#fef9c3; color:#854d0e; }
+  .act-detail { display:none; padding:8px 12px; margin-top:6px; font-size:14px; color:#4a5568; background:#f8fafc; border-radius:8px; }
+  .act-detail.open { display:block; }
+
+  .food-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:6px; }
+  .food-item { background:#f0f4f8; border-radius:8px; padding:8px 14px; display:flex; justify-content:space-between; font-size:14px; }
+  .food-item .price { color:#22c55e; font-weight:600; }
+
+  .flex-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+  @media(max-width:700px) { .flex-row { grid-template-columns:1fr; } }
+
+  .map-wrap { border-radius:12px; overflow:hidden; height:300px; border:1px solid #e0e4e8; }
+
+  .stats { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin:12px 0; }
+  .stat-box { background:#f0f4f8; border-radius:10px; padding:16px; text-align:center; }
+  .stat-box .val { font-size:24px; font-weight:700; color:#1a5c2a; }
+  .stat-box .lbl { font-size:12px; color:#64748b; margin-top:2px; }
+
+  table { width:100%; border-collapse:collapse; font-size:14px; margin:8px 0; }
+  th, td { padding:8px 10px; text-align:left; border-bottom:1px solid #e4e7eb; }
+  th { color:#64748b; font-weight:600; font-size:12px; text-transform:uppercase; }
+  
+  .legend { display:flex; gap:16px; justify-content:center; font-size:13px; color:#4a5568; margin-top:6px; }
+  .legend .dot { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:4px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🇨🇷 Costa Rica · Sept 6–13, 2026</h1>
+  <div class="sub">Liberia Airport → La Fortuna → Monteverde → Tamarindo → Liberia Airport</div>
+</div>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('overview')">📋 Overview</button>
+    <button class="tab" onclick="switchTab('fortuna')">🌋 La Fortuna</button>
+    <button class="tab" onclick="switchTab('monteverde')">🌥️ Monteverde</button>
+    <button class="tab" onclick="switchTab('tamarindo')">🏄 Tamarindo</button>
+  </div>
+
+  <!-- Overview tab -->
+  <div id="tab-overview" class="tab-content">
+    <div class="card">
+      <h2>📊 At a Glance</h2>
+      <div class="stats">
+        <div class="stat-box"><div class="val">7</div><div class="lbl">Days</div></div>
+        <div class="stat-box"><div class="val">3</div><div class="lbl">Destinations</div></div>
+        <div class="stat-box"><div class="val">~12h</div><div class="lbl">Driving</div></div>
+        <div class="stat-box"><div class="val">$1,200-2,500</div><div class="lbl">Per Person</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>📅 Day-by-Day Plan</h2>
+      <table>
+        <tr><th>Date</th><th>Location</th><th>Logistics</th></tr>
+        <tr><td>Sun Sept 6</td><td>🌋 La Fortuna</td><td>Land LIR 9am, drive 3h, check in</td></tr>
+        <tr><td>Mon Sept 7</td><td>🌋 La Fortuna</td><td>Full day in La Fortuna</td></tr>
+        <tr><td>Tues Sept 8</td><td>🌥️ Monteverde</td><td>Check out, drive 3h to Monteverde</td></tr>
+        <tr><td>Wed Sept 9</td><td>🌥️ Monteverde</td><td>Full day in Monteverde</td></tr>
+        <tr><td>Thurs Sept 10</td><td>🏄 Tamarindo</td><td>Check out, drive 3.5h to Tamarindo</td></tr>
+        <tr><td>Fri Sept 11</td><td>🏄 Tamarindo</td><td>Full day in Tamarindo</td></tr>
+        <tr><td>Sat Sept 12</td><td>🏄→✈️</td><td>Flex day. Drive 1h to Liberia or stay in Tamarindo</td></tr>
+        <tr><td>Sun Sept 13</td><td>✈️ Home</td><td>Drop car, LIR airport by 11am, fly 1:15pm</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h2>💰 Budget</h2>
+      <table>
+        <tr><th>Style</th><th>Per Day</th><th>Total (7 days)</th></tr>
+        <tr><td>🎒 Backpacker</td><td>$50-80</td><td>$400-600</td></tr>
+        <tr><td>🏨 Comfortable</td><td>$150-200</td><td>$1,200-1,600</td></tr>
+        <tr><td>🥂 Luxury</td><td>$350-500</td><td>$2,500-3,500</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h2>💡 Practical Tips</h2>
+      <div class="info-box">💵 <b>Currency:</b> 500 CRC ≈ $1 USD. Both accepted. Cash for sodas & parking.</div>
+      <div class="info-box">🚗 <b>Car:</b> 4x4 recommended for mountains. $50-70/day. Paved to Tamarindo.</div>
+      <div class="info-box">🌧️ <b>Weather:</b> Sept = rainy season. Afternoon showers, lush green, fewer crowds.</div>
+      <div class="info-box">🥘 <b>Food:</b> Sodas (local diners) = $5-8 casados. Mid-range = $12-20.</div>
+      <div class="info-box warn">🔒 <b>Safety:</b> Don't leave valuables on Tamarindo beaches. Nothing visible in parked cars.</div>
+    </div>
+    <div class="card">
+      <h2>🗺️ Route Map</h2>
+      <div class="map-wrap" id="mapOverview" style="height:350px"></div>
+      <div class="legend">
+        <div><span class="dot" style="background:#3b82f6"></span> Route</div>
+        <div><span class="dot" style="background:#22c55e"></span> Stops</div>
+        <div><span class="dot" style="background:#f59e0b"></span> Airport</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Destination tabs populated by JS -->
+  <div id="tab-fortuna" class="tab-content" style="display:none"></div>
+  <div id="tab-monteverde" class="tab-content" style="display:none"></div>
+  <div id="tab-tamarindo" class="tab-content" style="display:none"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const DATA = {
+  fortuna: {
+    title:"🌋 La Fortuna", dates:"Sun Sept 6 → Tues Sept 8 · 2 nights",
+    drive:"🚗 Arrive LIR 9am. Drive 3h around Lake Arenal (paved, scenic). Arrive ~12pm.",
+    stay:"🏨 Hotel Los Lagos ($100-150), Selina ($15-25 dorm), Tabacón ($400+)",
+    warn: null,
+    acts: [
+      {n:"🌋 Arenal 1968 Volcano Hike",s:"5/10",c:"score-mid",d:"$15-20 · 2-4hrs. Walk lava fields from the 1968 eruption. Go at 7am — clouds swallow the summit by 10am. Two trail options."},
+      {n:"💧 La Fortuna Waterfall",s:"10/10",c:"score-high",d:"$20 · 1.5-2hrs. 70m waterfall, 500 steps down. Swimming restricted. NO drones. Ice cream + bar on site."},
+      {n:"🌉 Mistico Hanging Bridges",s:"9/10",c:"score-high",d:"$30 entry + $30 guide · 2-3hrs. 16 canopy bridges. HIRE A GUIDE — you'll see monkeys/sloths vs just leaves."},
+      {n:"♨️ Hot Springs",s:"10/10",c:"score-high",d:"$0-85. Free: El Chollín (roadside river). $15 Los Lagos. $40 Baldi (25 pools). $85 Tabacón (luxury, river-fed)."},
+      {n:"🦅 Zip-lining",s:"7/10",c:"score-mid",d:"$50-85 · Half-day. 'Best zip-lining in the world.' Superman cable + Tarzan swing. Sky Adventures."},
+      {n:"🦥 Sloth Trail (Bogarin)",s:"6/10",c:"score-mid",d:"$20-30 · 1.5hrs. Guaranteed sloth sightings. Flat easy walk. Best budget activity."},
+      {n:"🐸 Night Frog Walk",s:"5/10",c:"score-mid",d:"$25-35 · 1.5-2hrs. UV lights reveal red-eyed frogs, tarantulas, kinkajous."}
+    ],
+    food: [
+      {n:"Soda Viquez / La Hormiga",p:"$5-8",d:"Local casados — best value in town"},
+      {n:"Soda Saboris Lulu",p:"$5-8",d:"Top breakfast spot. Fresh fruit sides, huge smoothies"},
+      {n:"Restaurante Rodriguez",p:"$5-8",d:"Traditional soda, home-cooked casados & chicken bowls"},
+      {n:"Mercadito Arenal",p:"$8-15",d:"Food hall: burgers, pizza, sushi, Mexican — great for groups"},
+      {n:"Restaurante Don Rufino",p:"$20-35",d:"Steak & seafood, the best dinner spot"},
+      {n:"Chifa La Familia Feliz",p:"$12-18",d:"Peruvian-Costa Rican fusion"},
+      {n:"Super Rosvil / Palí",p:"🛒",d:"Supermarkets for groceries & supplies"}
+    ]
+  },
+  monteverde: {
+    title:"🌥️ Monteverde", dates:"Tues Sept 8 → Thurs Sept 10 · 2 nights",
+    drive:"🚗 3h around Lake Arenal (stunning views!). Last stretch unpaved — 4x4 helps. 1,400m elevation — bring warm layers!",
+    stay:"🏨 Hotel Ficus ($80-120), Monteverde Lodge ($150), Selina ($15-25 dorm)",
+    warn: null,
+    acts: [
+      {n:"🌥️ Monteverde Cloud Forest Reserve",s:"8/8",c:"score-high",d:"$25 + $25 guide · 2-4hrs. BOOK ONLINE DAYS AHEAD — timed entry sells out. 13km trails, hanging bridge. Go 7am."},
+      {n:"🦅 Zip-lining / Canopy",s:"7/8",c:"score-high",d:"$50-80 · Half-day. Monteverde INVENTED Costa Rican zip-lining. 100% Aventura: Superman + Tarzan."},
+      {n:"🌙 Night Walk",s:"6/8",c:"score-mid",d:"$25-35 · 1.5-2hrs. Frogs, tarantulas, kinkajous, glowing fungi. No flash. Closed shoes."},
+      {n:"🌉 Hanging Bridges (Selvatura)",s:"5/8",c:"score-mid",d:"$30-40 · 1.5-2hrs. 8 bridges through canopy. Eye-to-eye with howler monkeys."},
+      {n:"☕ Coffee + Chocolate Tour",s:"5/8",c:"score-mid",d:"$30-40 · 2-3hrs. Don Juan or El Trapiche. Bean-to-cup + pod-to-bar + all tastings."},
+      {n:"🐸 Santa Elena Reserve",s:"4/8",c:"score-mid",d:"$16-18 · 2-3hrs. Quieter, higher (1,600m), best quetzal odds."},
+      {n:"💦 El Tigre Waterfalls",s:"4/8",c:"score-mid",d:"$25-30 · 3-4hrs. Hike down, ride horse/4x4 back. Less touristy."}
+    ],
+    food: [
+      {n:"Soda La Amistad / El Rio",p:"$5-8",d:"Classic casados, local favorite"},
+      {n:"Tree House Restaurant",p:"$12-18",d:"Built around a giant fig tree, live music"},
+      {n:"Stella's Bakery",p:"$5-10",d:"Breakfast, pastries, pre-hike coffee"},
+      {n:"Cheese Factory (ice cream!)",p:"$3-8",d:"Quaker-founded. Fresh cheese & ice cream"},
+      {n:"SuperCompro",p:"🛒",d:"Main supermarket in Santa Elena"}
+    ]
+  },
+  tamarindo: {
+    title:"🏄 Tamarindo", dates:"Thurs Sept 10 → Sat Sept 12 · 2+1 nights",
+    drive:"🚗 3.5h down mountain, through dry Guanacaste forest. Paved once on highway. HOT — 30°C+.",
+    stay:"🏨 Hotel Pasatiempo ($100-150), Tamarindo Diria ($150-250), Selina ($15-25 dorm)",
+    warn:"⚠️ Most expensive town in Costa Rica — 20-30% more than elsewhere. Budget accordingly.",
+    acts: [
+      {n:"🏄 Surfing",s:"12/12",c:"score-high",d:"$10-20 rental / $40-60 lesson. Best place in CR to learn. Warm water, sandy bottom. Witch's Rock."},
+      {n:"🌅 Sunset on Playa Tamarindo",s:"10/12",c:"score-high",d:"FREE at 5:30pm daily. Best sunset in CR. Grab a coconut from a beach vendor and sit."},
+      {n:"🛥️ Catamaran Sunset Cruise",s:"8/12",c:"score-high",d:"$75-100 · Half-day. Open bar, snorkeling, dolphins. Marlin del Rey. Book ahead."},
+      {n:"🏖️ Beach Hopping",s:"7/12",c:"score-mid",d:"~$20 transport. Conchal: crushed-shell sand (20min). Avellanas: Lola's pig beach bar (25min)."},
+      {n:"🌊 Estuary Kayak/Boat Tour",s:"6/12",c:"score-mid",d:"$35-50 · 2hrs. Mangrove tunnels, monkeys, crocodiles. Go at high tide, early morning."},
+      {n:"🌋 Rincón de la Vieja Day Trip",s:"5/12",c:"score-mid",d:"$15-20 · Full day (1.5h drive). Mud pots, fumaroles, hot springs. Mini-Arenal."}
+    ],
+    food: [
+      {n:"Soda El Buen Comer",p:"$5-8",d:"Best casados in Tamarindo"},
+      {n:"Falafel Bar",p:"$10-15",d:"Mediterranean-Costa Rican fusion"},
+      {n:"Dragonfly Bar & Grill",p:"$30-50",d:"Best restaurant in town — book ahead"},
+      {n:"Bamboo Sushi Club",p:"$20-35",d:"Rooftop sushi + sunset views"},
+      {n:"Saturday Farmers Market",p:"$3-8",d:"Fresh fruit, ceviche, empanadas"},
+      {n:"Auto Mercado / Super Compro",p:"🛒",d:"Grocery stores for supplies"}
+    ]
+  }
+};
+
+let mapInitialized = false;
+let activeMap = null;
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+  event.target.classList.add('active');
+  const el = document.getElementById(`tab-${name}`);
+  el.style.display = 'block';
+  if (name === 'overview') {
+    if (!mapInitialized) { initMap('mapOverview'); mapInitialized = true; }
+  } else {
+    renderDest(name);
+    if (!mapInitialized) { initMap('mapOverview'); mapInitialized = true; }
+  }
+}
+
+function sortByScore(acts) {
+  return acts.sort((a, b) => {
+    const parse = (s) => { const [n,d] = s.split('/').map(Number); return n/d; };
+    return parse(b.s) - parse(a.s);
+  });
+}
+
+for (let key in DATA) {
+  DATA[key].acts = sortByScore(DATA[key].acts);
+}
+
+function renderDest(name) {
+  const d = DATA[name];
+  let html = `<div class="card"><h2>${d.title} <span class="badge">${d.dates}</span></h2>`;
+  if (d.warn) html += `<div class="info-box warn">${d.warn}</div>`;
+  html += `<div class="info-box">${d.drive}</div>`;
+  html += `<div class="info-box stay">${d.stay}</div></div>`;
+  
+  html += `<div class="card"><h2>🎯 Activities <span class="badge">by video consensus</span></h2>
+    <table><tr><th>Activity</th><th>Details</th><th>Consensus</th></tr>`;
+  d.acts.forEach(a => {
+    html += `<tr><td style="font-weight:500">${a.n}</td><td>${a.d}</td><td><span class="score ${a.c}">${a.s}</span></td></tr>`;
+  });
+  html += `</table></div>`;
+  
+  html += `<div class="card"><h2>🍽️ Food & Groceries</h2>
+    <table><tr><th>Place</th><th>What to expect</th><th>Price</th></tr>`;
+  d.food.forEach(f => {
+    const desc = f.d || (f.p.includes('$') ? (f.p.length <= 5 ? 'Quick bite, good value' : '') : 'Groceries, snacks, supplies');
+    html += `<tr><td style="font-weight:500">${f.n}</td><td>${desc}</td><td class="price">${f.p}</td></tr>`;
+  });
+  html += `</table></div>`;
+
+  html += `<div class="card"><h2>🗺️ Where is ${name}</h2><div class="map-wrap" id="mapDest-${name}" style="height:280px"></div></div>`;
+  
+  document.getElementById(`tab-${name}`).innerHTML = html;
+  
+  setTimeout(() => {
+    if (activeMap) activeMap.remove();
+    activeMap = initQuickMap(`mapDest-${name}`, name);
+  }, 50);
+}
+
+function initMap(id) {
+  const map = L.map(id).setView([10.38, -85.1], 9);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>', maxZoom:19
+  }).addTo(map);
+  const stops = [
+    {n:"Liberia Airport",lat:10.593,lon:-85.544,c:"#f59e0b"},
+    {n:"La Fortuna",lat:10.471,lon:-84.645,c:"#22c55e"},
+    {n:"Monteverde",lat:10.308,lon:-84.808,c:"#22c55e"},
+    {n:"Tamarindo",lat:10.299,lon:-85.840,c:"#22c55e"},
+    {n:"Liberia Airport",lat:10.593,lon:-85.544,c:"#f59e0b"}
+  ];
+  stops.forEach(s => L.circleMarker([s.lat,s.lon],{radius:8,color:s.c,fillColor:s.c,fillOpacity:.8,weight:2}).addTo(map).bindPopup(`<b>${s.n}</b>`));
+  L.polyline(stops.map(s=>[s.lat,s.lon]),{color:'#3b82f6',weight:3,dashArray:'8 6',opacity:.7}).addTo(map);
+  map.fitBounds(L.latLngBounds(stops.map(s=>L.latLng(s.lat,s.lon))).pad(.15));
+}
+
+function initQuickMap(id, dest) {
+  const coords = {fortuna:[10.47,-84.645],monteverde:[10.308,-84.808],tamarindo:[10.299,-85.84]};
+  const names = {fortuna:"La Fortuna",monteverde:"Monteverde",tamarindo:"Tamarindo"};
+  const c = coords[dest];
+  const map = L.map(id).setView(c, 11);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>', maxZoom:19
+  }).addTo(map);
+  L.circleMarker(c,{radius:10,color:'#22c55e',fillColor:'#22c55e',fillOpacity:.8,weight:2}).addTo(map).bindPopup(`<b>${names[dest]}</b>`).openPopup();
+  return map;
+}
+
+// Default: show overview on load (HTML already sets it visible, just init map)
+document.addEventListener('DOMContentLoaded', () => {
+  initMap('mapOverview');
+  mapInitialized = true;
+});
+</script>
+</body>
+</html>
